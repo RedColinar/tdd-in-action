@@ -4,6 +4,7 @@ class Schema(schemaText: String) {
     init {
         val metas: List<String> = schemaText.trim().split(" ")
         for (meta in metas) {
+            if (meta == "") continue
             val type = meta.split(":")
             if (type.size != 2) throw IllegalArgumentException("schema should be like <name1>:<type1> <name2>:<type2>")
             map[type[0]] = getClassByType(type[1])
@@ -23,7 +24,8 @@ class Schema(schemaText: String) {
         return map.keys
     }
 
-    fun getClass(key: String): Class<*> {
+    fun getClass(_key: String): Class<*> {
+        val key = _key.toLowerCase()
         return if (map.containsKey(key)) {
             map[key]!!
         } else {

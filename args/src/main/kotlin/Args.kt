@@ -1,29 +1,28 @@
 class Args {
-    companion object {
-        fun parse(schema: Schema, kv: Map<String, String>): Args {
-            val args = Args()
-            schema.parameters().forEach {
-                val clazz: Class<*> = schema.getClass(it)
-                val value: String = kv[it] ?: ""
-                args.map[it] = getArgument(clazz, value)
-            }
 
-            return args
+    fun parse(schema: Schema, input: InputParameter): Args {
+        val args = Args()
+        schema.parameters().forEach {
+            val clazz: Class<*> = schema.getClass(it)
+            val value: String = input[it] ?: ""
+            args.map[it] = getArgument(clazz, value)
         }
 
-        private fun getArgument(clazz: Class<*>, value: String): Any {
-            return when (clazz) {
-                Int::class.java -> value.toInt()
-                Boolean::class.java -> {
-                    if (value == "") {
-                        true
-                    } else {
-                        value.toBoolean()
-                    }
+        return args
+    }
+
+    private fun getArgument(clazz: Class<*>, value: String): Any {
+        return when (clazz) {
+            Int::class.java -> value.toInt()
+            Boolean::class.java -> {
+                if (value == "") {
+                    true
+                } else {
+                    value.toBoolean()
                 }
-                String::class.java -> value
-                else -> clazz.newInstance()
             }
+            String::class.java -> value
+            else -> clazz.newInstance()
         }
     }
 
