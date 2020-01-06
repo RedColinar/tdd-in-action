@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 class ArgsTest {
@@ -12,5 +13,9 @@ class ArgsTest {
         assertEquals(true, arg.getArg("l"))
         assertEquals(8080, arg.getArg("p"))
         assertEquals("/usr/logs", arg.getArg("d"))
+
+        assertThrows(IllegalArgumentException::class.java) {
+            arg.getArg("no exist")
+        }
     }
 }
