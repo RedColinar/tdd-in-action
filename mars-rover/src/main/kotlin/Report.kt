@@ -1,0 +1,1 @@
+data class Report(val x: Int, val y: Int, val dir: Int, val message: String)
